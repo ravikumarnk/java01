@@ -1,48 +1,41 @@
-
-pipeline 
-{
+pipeline {
     agent any
 
-    stages 
-	{
-	       	stage('Test') 
-        	{
-         		steps
-          		{
-			 
-                	echo 'Testing my app'
-          		}
-        	}
-	
-		stage('Build') 
-        	{
-         		steps
-          		{
-			
-			 
-                	echo 'Building my app'
-          		}
-        	}
-
-		stage('deploy') 
-        	{
-         		steps
-          		{
-			 
-                	echo 'Deploy my app'
-          		}
-        	}
-        	
-    }
-    post
-    {
-        always
-        {
-            	emailext body: 'here is th body', subject: 'error', to: 'ravikelakam@gmail.com'
-		echo 'Deployment completed..  my app'
+    stages {
+        stage('Checkout') {
+            steps {
+                // Clone the repository
+                git 'https://rakaccount/...'
+            }
         }
-        
+
+        stage('Test') {
+            steps {
+                sh 'mvn clean test'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'mvn clean install'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deployment completed.. my app'
+            }
+        }
     }
-    
-    
+
+    post {
+        always {
+            emailext(
+                body: 'Here is the body of the email',
+                subject: 'Pipeline Status',
+                to: 'ravikelakam@gmail.com'
+            )
+            echo 'Deployment completed.. my app'
+        }
+    }
 }
