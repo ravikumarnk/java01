@@ -5,7 +5,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Clone the repository
-                git 'https://rakaccount/...'
+                git 'https://github.com/ravikumarnk/java01.git'
             }
         }
 
